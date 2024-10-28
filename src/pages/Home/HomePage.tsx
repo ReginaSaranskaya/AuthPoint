@@ -1,16 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
-import { logout } from '@/features/auth/model/authSlice';
 import { Button } from '@/shared/ui/Button';
+import { actions } from '@/features/auth/model/authSlice';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    dispatch(logout());
+    actions.clearUser();
     navigate('/');
   };
 

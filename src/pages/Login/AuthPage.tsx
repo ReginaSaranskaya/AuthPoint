@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { LoginForm } from '@/features/auth/ui/LoginForm';
-import { useAppSelector } from '@/shared/hooks/useAppSelector';
+import { LoginData, loginUser } from '@/shared/api/api';
 
 export const AuthPage: React.FC = () => {
-  const navigate = useNavigate();
-  const user = useAppSelector((state) => state.auth.user);
+  const login = async (data: LoginData) => {
+    const user = await loginUser(data);
+    localStorage.setItem('token', user.token);
 
-  useEffect(() => {
-    if (user) {
-      navigate('/home');
-    }
-  }, [user, navigate]);
+    return user;
+  };
 
   return (
     <Box
@@ -39,7 +36,7 @@ export const AuthPage: React.FC = () => {
         }}
       >
         <Typography variant="h3">Login</Typography>
-        <LoginForm />
+        <LoginForm login={login} />
       </Box>
     </Box>
   );

@@ -1,40 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { TextField } from '@mui/material';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
-import { loginThunk } from '../model/authThunks';
-import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
-import { useAppSelector } from '@/shared/hooks/useAppSelector';
-import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { LoginResponse } from '@/shared/api/api';
+import { actions } from '@/features/auth/model/authSlice';
 
-export const LoginForm: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.auth);
+export type LoginFormData = {
+  username: string;
+  password: string;
+};
 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+type Props = {
+  login: (data: LoginFormData) => Promise<LoginResponse>;
+};
 
-  const handleLogin = () => {
-    dispatch(loginThunk({ email, password }));
+export const LoginForm: React.FC<Props> = ({ login }) => {
+  const { register, handleSubmit, reset } = useForm<LoginFormData>();
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<LoginFormData> = async (
+    data: LoginFormData,
+  ) => {
+    try {
+      const { username, token } = await login(data);
+      actions.setUser({ username, token });
+      reset();
+      navigate('/home');
+    } catch (error) {
+      alert('Ошибка при авторизации: ' + error.message);
+    }
   };
 
   return (
-    <div>
-      <Input
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        type="email"
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <TextField
+        label="Username"
+        variant="outlined"
+        {...register('username', { required: 'Username is required' })}
+        fullWidth
+        margin="normal"
       />
-      <Input
+
+      <TextField
         label="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
         type="password"
+        variant="outlined"
+        {...register('password', { required: 'Password is required' })}
+        fullWidth
+        margin="normal"
       />
-      <Button onClick={handleLogin} disabled={loading}>
-        {loading ? 'Logging in...' : 'Login'}
+      <Button type="submit" variant="contained" color="primary">
+        Login
       </Button>
-      {error && <p>{error}</p>}
-    </div>
+    </form>
   );
 };

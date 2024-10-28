@@ -1,44 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AuthState, User } from '@/shared/types';
-import { loginThunk } from './authThunks';
+interface UserState {
+  username: string | null;
+  token: string | null;
+  isAuthenticated: boolean;
+}
 
-const initialState: AuthState = {
-  user: null,
-  loading: false,
-  error: null,
+const initialState: UserState = {
+  username: null,
+  token: null,
+  isAuthenticated: false,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
-    logout: (state: AuthState) => {
-      state.user = null;
+    setUser(
+      state: UserState,
+      action: PayloadAction<{ username: string; token: string }>,
+    ) {
+      state.username = action.payload.username;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(loginThunk.pending, (state: AuthState) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        loginThunk.fulfilled,
-        (state: AuthState, action: PayloadAction<User>) => {
-          state.loading = false;
-          state.user = action.payload;
-        },
-      )
-      .addCase(
-        loginThunk.rejected,
-        (state: AuthState, action: PayloadAction<string>) => {
-          state.loading = false;
-          state.error = action.payload;
-        },
-      );
+    clearUser(state) {
+      state.username = null;
+      state.token = null;
+      state.isAuthenticated = false;
+    },
   },
 });
 
-export const { logout } = authSlice.actions;
-export default authSlice.reducer;
+export const actions = userSlice.actions;
+export default userSlice.reducer;
