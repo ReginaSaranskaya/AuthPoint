@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { CssBaseline } from '@mui/material';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { BrowserRouter } from 'react-router-dom';
+
+import './styles.scss';
 
 import { store } from './app/store';
-import { AuthPage } from '@/pages/Login/AuthPage';
-import HomePage from '@/pages/Home/HomePage';
+import { theme } from '@/shared/config/theme';
+import { App } from '@/app/App';
 
 const rootElement = document.getElementById('root');
 
@@ -17,10 +19,9 @@ if (rootElement) {
     <Provider store={store}>
       <CssBaseline />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AuthPage />} />
-          <Route path="/home" element={<HomePage />} />
-        </Routes>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>,
   );

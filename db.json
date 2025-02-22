@@ -12,5 +12,24 @@
       "password": "user123",
       "token": "user5678"
     }
+  ],
+  "profileInfo": [
+    {
+      "name": "John Wood Sanders",
+      "age": "35",
+      "occupation": "Owner of a small marketing agency",
+      "technologySkillLevel": "Moderate",
+      "bio": "John runs a small marketing agency that provides various digital marketing services to clients. He manages a team of 5 employees and frequently works on multiple projects simultaneously. John is always busy, and he wants an invoicing system that is user-friendly and allows him to generate invoices quickly and accurately.",
+      "goals": "To quickly and easily generate professional-looking invoices that accurately reflect the services he has provided to his clients.",
+      "motivations": ["Saving time and effort", "Generating professional-looking invoices", "Accurately tracking and managing his finances"],
+      "painPoints": ["Tedious manual invoice creation", "Inability to track invoices efficiently", "Difficulty in managing finances effectively"],
+      "characteristics": {
+        "extrovert": 55,
+        "feeling": 37,
+        "creative": 25,
+        "liberal": 40,
+        "active": 90
+      }
+    }
   ]
 }

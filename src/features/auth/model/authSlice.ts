@@ -12,7 +12,7 @@ const initialState: UserState = {
   isAuthenticated: false,
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -33,4 +33,3 @@ const userSlice = createSlice({
 });
 
 export const actions = userSlice.actions;
-export default userSlice.reducer;

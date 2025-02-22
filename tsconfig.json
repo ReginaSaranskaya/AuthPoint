@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./node_modules/@types"], //TypeScript учитывает global.d.ts
     "target": "es5",
     "jsx": "react-jsx",
     "noEmitOnError": true,
@@ -8,6 +9,9 @@
     "noImplicitAny": true,
     "esModuleInterop": true,
     "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "strict": true,
     "paths": {
       "@/*": ["src/*"]
     },
@@ -21,5 +25,10 @@
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
+    "include": [
+      "src/**/*.ts",                     // Включаем все TypeScript файлы
+      "src/**/*.tsx",                    // Включаем все TSX файлы
+      "global.d.ts"
+    ]
 }

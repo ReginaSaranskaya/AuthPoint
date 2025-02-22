@@ -23,15 +23,10 @@ module.exports = {
   devtool: 'source-map',
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'babel-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
+      // {
+      //   test: /\.css$/,
+      //   use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      // },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -42,10 +37,55 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.module\.scss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                namedExport: false,
+                localIdentName: "[name]__[local]--[hash:base64:5]",
+              },
+            },
+          },
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot|otf)$/,
+        type: "asset/resource", // Обработка шрифтов как статических ресурсов
+        generator: {
+          filename:  'assets/fonts/[name][ext]', // Путь шрифтов в папке dist/fonts
+        },
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset', // автоматический выбор 'asset/resource' или 'asset/inline'
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8 * 1024, // Картинки до 8 КБ будут инлайн
+          },
+        },
+        generator: {
+          filename: 'images/[name][hash][ext][query]',
+        },
+      },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.png', '.jpg', '.svg'],
     alias: {
         '@': path.resolve(__dirname, 'src'),
     },

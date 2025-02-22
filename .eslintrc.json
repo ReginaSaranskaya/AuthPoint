@@ -1,81 +1,137 @@
 {
   "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
+    "browser": true, // Указывает, что код будет выполняться в среде браузера.
+    "es2021": true,  // Включает поддержку новых возможностей JavaScript 2021 года.
+    "node": true     // Указывает, что код также может выполняться в Node.js.
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "plugin:prettier/recommended"
+    "eslint:recommended", // Основные правила ESLint, рекомендованные для всех проектов.
+    "plugin:react/recommended", // Рекомендованные правила для работы с React.
+    "plugin:@typescript-eslint/recommended", // Рекомендованные правила для TypeScript.
+    "plugin:jsx-a11y/recommended", // Правила для повышения доступности (a11y) в JSX.
+    "plugin:import/errors", // Ловит ошибки в импортах.
+    "plugin:import/warnings", // Ловит предупреждения в импортах.
+    "plugin:import/typescript", // Добавляет поддержку TypeScript в плагин import.
+    "plugin:prettier/recommended" // Интеграция Prettier с ESLint.
   ],
-  "parser": "@typescript-eslint/parser",
+  "parser": "@typescript-eslint/parser", // Указывает, что будет использоваться TypeScript парсер.
   "parserOptions": {
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true // Включает поддержку JSX.
     },
-    "ecmaVersion": 12,
-    "sourceType": "module"
+    "ecmaVersion": 12, // Указывает версию ECMAScript 2021 (ES12).
+    "sourceType": "module" // Указывает, что используются ES-модули.
   },
   "plugins": [
-    "react",
-    "@typescript-eslint",
-    "import",
-    "jsx-a11y",
-    "prettier",
-    "boundaries"
+    "react", // Подключает поддержку React.
+    "@typescript-eslint", // Подключает правила для TypeScript.
+    "import", // Подключает плагин для работы с импортами.
+    "jsx-a11y", // Подключает правила доступности для JSX.
+    "prettier", // Интеграция с Prettier.
+    "boundaries" // Плагин для проверки архитектуры Feature-Sliced Design.
   ],
   "rules": {
-    "prettier/prettier": ["error"],
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
-    "import/no-unresolved": "off",
-    "import/namespace": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "error",
+    "prettier/prettier": ["error"], // Применяет правила Prettier как ошибки.
+    "react/react-in-jsx-scope": "off", // Отключает необходимость импорта React в каждом файле (для React 17+).
+    "react/prop-types": "off", // Отключает необходимость указания PropTypes (актуально для TypeScript).
+    "import/no-unresolved": "off", // Отключает проверку на отсутствие файлов или модулей (уже покрыто TypeScript).
+    "import/namespace": "off", // Отключает проверку namespace в импортах.
+    "@typescript-eslint/no-unused-vars": "off", // Отключает предупреждения о неиспользуемых переменных (покрыто TypeScript).
+    "@typescript-eslint/explicit-function-return-type": "off", // Отключает необходимость явно указывать возвращаемый тип функции.
+    "@typescript-eslint/no-explicit-any": "error", // Запрещает использование типа `any` (рекомендуется использовать строгие типы).
     "import/order": ["error", {
       "groups": [
-        ["builtin", "external"],
-        ["internal", "parent", "sibling", "index"]
+        ["builtin", "external"], // Сначала встроенные и внешние модули.
+        ["internal", "parent", "sibling", "index"] // Затем внутренние, родительские, соседние и индексные модули.
       ],
-      "newlines-between": "always"
+      "newlines-between": "always" // Требует пустую строку между группами импортов.
     }],
-    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/anchor-is-valid": "off", // Отключает правило проверки ссылок для упрощения разработки.
     "boundaries/element-types": [2, {
-      "default": "disallow",
+      "default": "disallow", // По умолчанию запрещает импорт из неразрешённых слоёв.
       "rules": [
-        { "from": ["app"], "allow": ["processes", "pages", "features", "entities", "shared"] },
-        { "from": ["processes"], "allow": ["pages", "features", "entities", "shared"] },
-        { "from": ["pages"], "allow": ["features", "entities", "shared"] },
-        { "from": ["features"], "allow": ["entities", "shared"] },
-        { "from": ["entities"], "allow": ["shared"] },
-        { "from": "shared", "allow": ["shared"] }
+        { "from": ["app"], "allow": ["processes", "pages", "features", "entities", "shared"] }, // Правила импорта для слоя app.
+        { "from": ["processes"], "allow": ["pages", "features", "entities", "shared"] }, // Для слоя processes.
+        { "from": ["pages"], "allow": ["features", "entities", "shared"] }, // Для слоя pages.
+        { "from": ["features"], "allow": ["entities", "shared"] }, // Для слоя features.
+        { "from": ["entities"], "allow": ["shared"] }, // Для слоя entities.
+        { "from": "shared", "allow": ["shared"] } // Для слоя shared (только внутри слоя).
       ]
-    }]
+    }],
+    // Регулирование применения "as"
+    "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+
+    // Максимальное количество аргументов в функции
+    "max-params": ["warn", 3],
+
+    // Запрет на удаление значений массива через оператор delete
+    "no-array-constructor": "error",
+
+    // Запрет на дублирование значений в enum
+    "@typescript-eslint/no-duplicate-enum-values": "error",
+
+    // Запрет на дублирование значений в union и intersection
+    "@typescript-eslint/no-redundant-type-constituents": "warn",
+
+    // Предупреждение о пустых функциях
+    "no-empty-function": "warn",
+
+    // Запрет на перебор массива через for in
+    "@typescript-eslint/no-for-in-array": "error",
+
+    // Предупреждение об указании типа для числа, строки или boolean
+    "@typescript-eslint/no-inferrable-types": "warn",
+
+    // Запрет на случайные числа
+    "no-magic-numbers": [
+      "warn",
+      { "ignoreArrayIndexes": true, "ignoreDefaultValues": true }
+    ],
+
+    // Запрет на смешанные значения в enum
+    "@typescript-eslint/prefer-literal-enum-member": "error",
+
+    // Предупреждение об объявлении, к. уже существует во внешней области видимости
+    "no-shadow": "warn",
+
+    // Предупреждение об избыточном сравнении с логическим литералом
+    "no-extra-boolean-cast": "warn",
+
+    // Предупреждение о лишнем сравнении
+    "eqeqeq": ["warn", "always"],
+
+    // Предупреждение о лишних шаблонных выражениях
+    "no-template-curly-in-string": "warn",
+
+    // Запрет использования переменных до их определения
+    "@typescript-eslint/no-use-before-define": "error",
+
+    // Предупреждение об использовании лог. операторов вместо опциональной цепочки
+    "@typescript-eslint/prefer-optional-chain": "warn",
+
+    // Предупреждение об использовании "as" для initial value reduce, а не дженерика
+    "@typescript-eslint/prefer-reduce-type-parameter": "warn",
+
+    // Предупреждение об использовании async function без await внутри
+    "@typescript-eslint/require-await": "warn"
   },
   "settings": {
     "react": {
-      "version": "detect"
+      "version": "detect" // Автоматически определяет используемую версию React.
     },
     "import/resolver": {
       "typescript": {
-        "alwaysTryTypes": true,
-        "project": "./tsconfig.json"
+        "alwaysTryTypes": true, // Разрешает попытки найти типы, даже если они не явно указаны.
+        "project": "./tsconfig.json" // Указывает путь к TypeScript конфигурации.
       }
     },
     "boundaries/elements": [
-      { "type": "app", "pattern": "src/app/*" },
-      { "type": "processes", "pattern": "src/processes/*" },
-      { "type": "pages", "pattern": "src/pages/*" },
-      { "type": "features", "pattern": "src/features/*" },
-      { "type": "entities", "pattern": "src/entities/*" },
-      { "type": "shared", "pattern": "src/shared/*" }
+      { "type": "app", "pattern": "src/app/*" }, // Указывает, что файлы слоя app находятся в папке src/app.
+      { "type": "processes", "pattern": "src/processes/*" }, // Для слоя processes.
+      { "type": "pages", "pattern": "src/pages/*" }, // Для слоя pages.
+      { "type": "features", "pattern": "src/features/*" }, // Для слоя features.
+      { "type": "entities", "pattern": "src/entities/*" }, // Для слоя entities.
+      { "type": "shared", "pattern": "src/shared/*" } // Для слоя shared.
     ]
   }
 }

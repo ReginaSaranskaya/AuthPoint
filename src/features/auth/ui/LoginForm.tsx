@@ -1,11 +1,11 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/shared/ui/Button';
 import { LoginResponse } from '@/shared/api/api';
 import { actions } from '@/features/auth/model/authSlice';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 
 export type LoginFormData = {
   username: string;
@@ -17,17 +17,16 @@ type Props = {
 };
 
 export const LoginForm: React.FC<Props> = ({ login }) => {
+  const dispatch = useAppDispatch();
   const { register, handleSubmit, reset } = useForm<LoginFormData>();
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginFormData> = async (
     data: LoginFormData,
   ) => {
     try {
       const { username, token } = await login(data);
-      actions.setUser({ username, token });
+      dispatch(actions.setUser({ username, token }));
       reset();
-      navigate('/home');
     } catch (error) {
       alert('Ошибка при авторизации: ' + error.message);
     }
